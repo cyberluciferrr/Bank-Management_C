@@ -3,7 +3,7 @@
 
 int main() {
     // Variable Declarations
-    int accnum, assistance, foundfname, foundsname, option, key;
+    int accnum, assistance, foundfname, foundsname, option, key,k,credentials;
     char lang;
     char fname, sname;
     float withdraw, balance, deposit;
@@ -16,15 +16,15 @@ int main() {
 
     printf("*****Bank Initialization*****\n");
     printf("Can only be done by the manager\n");
-    key = 1234;
+    key = 1234;  //if you want to change the key here 
 
     do {
         printf("Enter key: ");
-        scanf("%d", &key);
-        if (key != 1234) {
+        scanf("%d", &k);
+        if (k != key) {
             printf("Enter correct key!\n");
         }
-    } while (key != 1234);
+    } while (k != key);
 
     printf("Enter the number of accounts to be on the server (maximum %d): ", maxacc);
     scanf("%d", &totalacc);
@@ -43,7 +43,7 @@ int main() {
         scanf(" %c", &lang);
 
         while (lang != 'G' && lang != 'E') {
-            printf("Enter from the options above!\n");
+            printf("Enter from the options above!\n\n");
             printf("G--German\n");
             printf("E--English\n\n");
             printf("Please select your language, enter the initials of the language given: ");
@@ -66,7 +66,7 @@ int main() {
                 switch (option) {
                     case 1:
                         if (x >= totalacc) {
-                            printf("Account limit reached. Call manager to increase the limit.\n");
+                            printf("Account limit reached.Call manager to increase the limit.\n");
                             printf("Enter manager key to increase limit: ");
                             scanf("%d", &key);
                             if (key == 1234) {
@@ -94,7 +94,7 @@ int main() {
                             printf("M-Male\nF-Female\nSelect your gender: ");
                             scanf(" %c", &gender[x]);
                             if (gender[x] != 'M' && gender[x] != 'F') {
-                                printf("Choose from the above genders!\n");
+                                printf("Choose from the above genderS or else consult a doctor!\n");
                             }
                         } while (gender[x] != 'M' && gender[x] != 'F');
 
@@ -126,7 +126,11 @@ int main() {
                         break;
 
                     case 2:
+                
                         do {
+                            credentials=0;
+                            do{
+
                             printf("Enter your first name initial: ");
                             scanf(" %c", &fname);
                             printf("Enter your second name initial: ");
@@ -136,9 +140,11 @@ int main() {
                             foundsname = 0;
                             for (int i = 0; i < x; i++) {
                                 if (acc[i][1] == fname) {
+                                    credentials=1;
                                     foundfname = 1;
                                     if (acc[i][2] == sname) {
                                         foundsname = 1;
+                                        accnum=i;
                                         break;
                                     }
                                 }
@@ -146,6 +152,7 @@ int main() {
 
                             if (!foundfname || !foundsname) {
                                 printf("Enter correct initials!\n");
+                                credentials=0;
                             }
                         } while (!foundfname || !foundsname);
 
@@ -153,17 +160,20 @@ int main() {
                             printf("Enter your NIC number: ");
                             scanf("%d", &extpwd);
                             foundfname = 0;
-                            for (int i = 0; i < x; i++) {
-                                if (pwd[i] == extpwd) {
-                                    foundfname = 1;
-                                    break;
-                                }
+                            
+                            if (pwd[accnum] == extpwd) {
+                            foundfname = 1;
+                            credentials=1;
                             }
+                            
 
                             if (!foundfname) {
                                 printf("Please enter correct NIC number!\n");
+                                credentials=0;
                             }
-                        } while (!foundfname);
+                        } while(!foundfname);
+                        } while (credentials!=1);
+                    
 
                         do {
                             printf("1-Withdraw\n");
@@ -175,11 +185,11 @@ int main() {
                                 case 1:
                                     printf("Enter the amount you want to withdraw: ");
                                     scanf("%f", &withdraw);
-                                    balance = accdetails[x][1];
+                                    balance = accdetails[accnum][1];
 
-                                    if (balance - withdraw >= -100 && withdraw <= 200) {
-                                        accdetails[x][1] -= withdraw;
-                                        printf("Transaction successful! Your current balance is $%.2f\n", accdetails[x][1]);
+                                    if (balance - withdraw >= accdetails[accnum][2] && withdraw <= accdetails[accnum][2]) {
+                                        accdetails[accnum][1] -= withdraw;
+                                        printf("Transaction successful! Your current balance is $%.2f\n", accdetails[accnum][1]);
                                     } else {
                                         printf("Insufficient funds or withdrawal limit exceeded.\n");
                                     }
@@ -188,8 +198,8 @@ int main() {
                                 case 2:
                                     printf("Enter the amount you want to deposit: ");
                                     scanf("%f", &deposit);
-                                    accdetails[x][1] += deposit;
-                                    printf("Transaction successful! Your current balance is $%.2f\n", accdetails[x][1]);
+                                    accdetails[accnum][1] += deposit;
+                                    printf("Transaction successful! Your current balance is $%.2f\n", accdetails[accnum][1]);
                                     break;
 
                                 default:
@@ -280,6 +290,8 @@ int main() {
                         break;
 
                     case 2:
+                    do {
+                        credentials=0;
                         do {
                             printf("Geben Sie die Initialen Ihres Vornamens ein: ");
                             scanf(" %c", &fname);
@@ -293,6 +305,8 @@ int main() {
                                     foundfname = 1;
                                     if (acc[i][2] == sname) {
                                         foundsname = 1;
+                                        accnum=i;
+                                        credentials =1;
                                         break;
                                     }
                                 }
@@ -300,6 +314,7 @@ int main() {
 
                             if (!foundfname || !foundsname) {
                                 printf("Geben Sie die richtigen Initialen ein!\n");
+                                credentials=0;
                             }
                         } while (!foundfname || !foundsname);
 
@@ -307,17 +322,19 @@ int main() {
                             printf("Geben Sie Ihre NIC-Nummer ein: ");
                             scanf("%d", &extpwd);
                             foundfname = 0;
-                            for (int i = 0; i < x; i++) {
-                                if (pwd[i] == extpwd) {
+                            
+                                if (pwd[accnum] == extpwd) {
                                     foundfname = 1;
-                                    break;
+                                    credentials=1;
                                 }
-                            }
+                            
 
                             if (!foundfname) {
                                 printf("Bitte geben Sie die richtige NIC-Nummer ein!\n");
+                                credentials=0;
                             }
                         } while (!foundfname);
+                } while (credentials!=1);
 
                         do {
                             printf("1-Abheben\n");
@@ -329,11 +346,11 @@ int main() {
                                 case 1:
                                     printf("Geben Sie den Betrag ein, den Sie abheben möchten: ");
                                     scanf("%f", &withdraw);
-                                    balance = accdetails[x][1];
+                                    balance = accdetails[accnum][1];
 
-                                    if (balance - withdraw >= -100 && withdraw <= 200) {
-                                        accdetails[x][1] -= withdraw;
-                                        printf("Transaktion erfolgreich! Ihr aktuelles Guthaben beträgt $%.2f\n", accdetails[x][1]);
+                                    if (balance - withdraw >= accdetails[accnum][2] && withdraw <= accdetails[accnum][3]) {
+                                        accdetails[accnum][1] -= withdraw;
+                                        printf("Transaktion erfolgreich! Ihr aktuelles Guthaben beträgt $%.2f\n", accdetails[accnum][1]);
                                     } else {
                                         printf("Unzureichende Mittel oder Auszahlungslimit überschritten.\n");
                                     }
@@ -342,8 +359,8 @@ int main() {
                                 case 2:
                                     printf("Geben Sie den Betrag ein, den Sie einzahlen möchten: ");
                                     scanf("%f", &deposit);
-                                    accdetails[x][1] += deposit;
-                                    printf("Transaktion erfolgreich! Ihr aktuelles Guthaben beträgt $%.2f\n", accdetails[x][1]);
+                                    accdetails[accnum][1] += deposit;
+                                    printf("Transaktion erfolgreich! Ihr aktuelles Guthaben beträgt $%.2f\n", accdetails[accnum][1]);
                                     break;
 
                                 default:
