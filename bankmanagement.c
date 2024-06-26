@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 int main() {
     // Variable Declarations
@@ -34,7 +33,7 @@ int main() {
         return 1;
     }
 
-    while (1) {  // Infinite loop
+    while (1) {  //Infinite loop never ending program
         printf("*****DEUTCH BANKING NETWORK*****\n\n");
         printf("Welcome to Commerce Banking Network-CBN\n\n");
         printf("G--German\n");
@@ -93,8 +92,8 @@ int main() {
                         do {
                             printf("M-Male\nF-Female\nSelect your gender: ");
                             scanf(" %c", &gender[x]);
-                            if (gender[x] != 'M' && gender[x] != 'F') {
-                                printf("Choose from the above genderS or else consult a doctor!\n");
+                            if (gender[x] != 'M' && gender[x] != 'F') {    //validation check
+                                printf("Choose from the above genders or else consult a doctor!\n");
                             }
                         } while (gender[x] != 'M' && gender[x] != 'F');
 
@@ -104,7 +103,7 @@ int main() {
                             scanf("%d", &pwd1);
                             printf("Confirm NIC number: ");
                             scanf("%d", &pwd2);
-                            if (pwd1 != pwd2) {
+                            if (pwd1 != pwd2) {     //verification check
                                 printf("Please enter correct NIC number again!\n");
                             }
                         } while (pwd1 != pwd2);
